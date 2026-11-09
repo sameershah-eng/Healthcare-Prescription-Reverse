@@ -1,6 +1,6 @@
 {
   "name": "Mushonga — Healthcare & Prescription Reverse Bidding",
   "description": "Three connected native iOS 18 apps (Patient, Doctor, Pharmacy) running on one unified Zimbabwean healthcare backend with live reverse bidding.",
-  "requestFramePermissions": ["camera"],
+  "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -73,11 +73,15 @@ export function PhoneFrame({
     );
   }
 
-  // Desktop / Tablet Mockup with 8px stone-900 bezel and 44px rounded corners
+  // Desktop / Tablet Mockup with sleek titanium bezel and rounded corners
   return (
     <div className="flex flex-col items-center select-none shrink-0 group">
       {/* Top Role Indicator Tag */}
-      <div className="mb-2 flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/90 text-stone-200 border border-stone-800 shadow-sm backdrop-blur-md">
+      <div className={`mb-2 flex items-center gap-2 px-3 py-1 rounded-full border shadow-sm backdrop-blur-md ${
+        dark
+          ? 'bg-stone-900/90 text-stone-200 border-stone-800'
+          : 'bg-white/95 text-stone-800 border-stone-300'
+      }`}>
         <span className={`w-2 h-2 rounded-full ${currentRoleStyle.dot} animate-live-pulse`} />
         <span className="text-[11px] font-bold tracking-wide uppercase">
           {roleTitle}
@@ -91,7 +95,7 @@ export function PhoneFrame({
 
       {/* Phone Hardware Shell */}
       <div
-        className="relative w-[360px] max-w-[360px] h-[780px] max-h-[calc(100vh-140px)] rounded-[44px] p-2 bg-[#1A1A1A] border-4 border-stone-800 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] flex flex-col overflow-hidden transition-transform duration-200"
+        className="relative w-[340px] sm:w-[355px] h-[690px] max-h-[calc(100vh-170px)] min-h-[500px] rounded-[44px] p-2 bg-[#1A1F1D] border-4 border-stone-700/80 shadow-[0_20px_50px_rgba(0,0,0,0.35)] flex flex-col overflow-hidden transition-transform duration-200"
       >
         {/* Inner Screen Canvas */}
         <div className={`relative w-full h-full rounded-[36px] overflow-hidden flex flex-col ${

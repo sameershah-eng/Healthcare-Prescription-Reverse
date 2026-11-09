@@ -20,7 +20,7 @@ export default function App() {
 
   // Viewport tracking for mobile <768px vs desktop
   const [windowWidth, setWindowWidth] = useState<number>(() =>
-    typeof window !== 'undefined' ? window.innerWidth : 1440
+    typeof window !== 'undefined' ? window.innerWidth : 1200
   );
 
   useEffect(() => {
@@ -30,35 +30,42 @@ export default function App() {
   }, []);
 
   const isMobile = windowWidth < 768;
-  const isDesktopEcosystem = windowWidth >= 1280 && viewMode === 'ecosystem';
-
   const isDarkMode = themeMode === 'dark';
+  const showEcosystem = viewMode === 'ecosystem' && !isMobile;
 
   return (
-    <div className={`h-screen w-screen overflow-hidden flex flex-col select-none ${
-      isDarkMode ? 'dark bg-[#0E1513] text-stone-100' : 'bg-[#0E1513] text-stone-100'
+    <div className={`h-screen w-screen overflow-hidden flex flex-col select-none transition-colors ${
+      isDarkMode ? 'dark bg-[#0E1513] text-stone-100' : 'bg-[#F7F5F0] text-stone-900'
     }`}>
-      {/* Offline Mode Global Slim Ribbon */}
+      {/* Offline Mode Ribbon */}
       {isOffline && (
-        <div className="bg-[#C8432F] text-white text-[11px] font-bold py-1 px-4 text-center z-50 flex items-center justify-center gap-2">
-          <span>Offline mode active · Local transactions queued for automatic sync</span>
+        <div className="bg-[#C8432F] text-white text-[11px] font-bold py-1 px-4 text-center z-50 shrink-0 flex items-center justify-center gap-2">
+          <span>Offline mode active · Local actions queued for automatic sync</span>
         </div>
       )}
 
-      {/* Desktop Top Navigation Bar (Hidden on small mobile screens to maximize app canvas) */}
+      {/* Desktop Top Navigation Bar */}
       {!isMobile && <TopNavBar />}
 
       {/* Main Presentation Stage */}
-      <main className="relative flex-1 w-full overflow-hidden flex flex-col items-center justify-center bg-[#0E1513]">
-        {/* Subtle radial canvas backdrop */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(15,59,52,0.18)_0%,rgba(14,21,19,1)_85%)] pointer-events-none" />
+      <main className={`relative flex-1 w-full overflow-x-auto overflow-y-auto phone-scroll flex flex-col items-center justify-start transition-colors ${
+        isDarkMode
+          ? 'bg-[#0E1513]'
+          : 'bg-[#F2EFE9]'
+      }`}>
+        {/* Subtle Ambient Background Gradient */}
+        <div className={`absolute inset-0 pointer-events-none transition-opacity ${
+          isDarkMode
+            ? 'bg-[radial-gradient(circle_at_center,rgba(15,59,52,0.25)_0%,rgba(14,21,19,1)_85%)]'
+            : 'bg-[radial-gradient(circle_at_center,rgba(15,59,52,0.08)_0%,rgba(242,239,233,1)_85%)]'
+        }`} />
 
         {/* SVG Data Lines & Central Core API Node (Rendered in Ecosystem view) */}
-        {isDesktopEcosystem && <DataLinesOverlay />}
+        {showEcosystem && <DataLinesOverlay />}
 
         {/* ECOSYSTEM VIEW: 3 PHONES SIDE BY SIDE */}
-        {isDesktopEcosystem ? (
-          <div className="relative z-10 w-full max-w-[1340px] px-4 flex items-center justify-center gap-6 xl:gap-10 pt-1 pb-16">
+        {showEcosystem ? (
+          <div className="relative z-10 w-full min-w-max px-6 py-6 pb-24 flex items-start justify-center gap-6 xl:gap-8 min-h-full">
             {/* Phone 1: Patient App */}
             <PhoneFrame
               role="patient"
@@ -119,10 +126,14 @@ export default function App() {
             </PhoneFrame>
           </div>
         ) : (
-          /* SINGLE PHONE VIEW (Desktop <1280px or manual single phone toggle) */
-          <div className="relative z-10 flex flex-col items-center justify-center pt-2 pb-16">
+          /* SINGLE PHONE VIEW (with role switcher at top) */
+          <div className="relative z-10 flex flex-col items-center justify-start py-6 pb-24 min-h-full">
             {/* Segmented Role Switcher above the single phone */}
-            <div className="mb-3 p-1 rounded-2xl bg-stone-900 border border-stone-800 flex items-center gap-1 shadow-lg text-xs font-bold">
+            <div className={`mb-3 p-1 rounded-2xl border flex items-center gap-1 shadow-md text-xs font-bold ${
+              isDarkMode
+                ? 'bg-stone-900 border-stone-800'
+                : 'bg-white border-stone-300'
+            }`}>
               {[
                 { id: 'patient', label: 'Patient App', icon: User, tint: 'bg-[#0F3B34]' },
                 { id: 'doctor', label: 'Doctor App', icon: Stethoscope, tint: 'bg-[#2B4C7E]' },
@@ -137,7 +148,7 @@ export default function App() {
                     className={`px-4 py-2 rounded-xl flex items-center gap-2 transition-all ${
                       isSelected
                         ? `${r.tint} text-white shadow-md`
-                        : 'text-stone-400 hover:text-stone-200'
+                        : 'text-stone-500 hover:text-stone-900 dark:hover:text-stone-200'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />

@@ -20,6 +20,8 @@ import {
   X
 } from 'lucide-react';
 
+const EMPTY_REJECTED: string[] = [];
+
 interface PharmacyLiveRxProps {
   pharmacyId?: string;
   onNavigateToMyBids?: () => void;
@@ -34,7 +36,8 @@ export function PharmacyLiveRx({
   const floats = useMushongaStore((s) => s.floats);
   const bids = useMushongaStore((s) => s.bids);
   const prescriptions = useMushongaStore((s) => s.prescriptions);
-  const rejectedRxIds = useMushongaStore((s) => s.rejectedRxIdsByPharmacy[pharmacyId] || []);
+  const rejectedRxIdsByPharmacy = useMushongaStore((s) => s.rejectedRxIdsByPharmacy);
+  const rejectedRxIds = rejectedRxIdsByPharmacy[pharmacyId] || EMPTY_REJECTED;
 
   const t = translations[language];
 

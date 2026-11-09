@@ -37,7 +37,7 @@ export function TabBar({ role, tabs, activeTab, onSelectTab, dark = false }: Tab
                 onClick={() => onSelectTab(tab.id)}
                 className="relative -top-4 flex flex-col items-center group active:scale-95 transition-transform"
               >
-                <div className="w-13 h-13 rounded-full bg-[#D9673A] text-white flex items-center justify-center shadow-lg shadow-[#D9673A]/40 border-2 border-white dark:border-stone-900">
+                <div className="w-12 h-12 rounded-full bg-[#D9673A] text-white flex items-center justify-center shadow-lg shadow-[#D9673A]/40 border-2 border-white dark:border-stone-900">
                   <Icon className="w-6 h-6 stroke-[2.2]" />
                 </div>
                 <span className="text-[10px] font-bold text-[#D9673A] mt-0.5 tracking-tight">
@@ -76,7 +76,7 @@ export function TabBar({ role, tabs, activeTab, onSelectTab, dark = false }: Tab
                   }`}
                 />
                 {tab.badge && tab.badge > 0 ? (
-                  <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 rounded-full bg-[#D9673A] text-[9px] font-bold text-white flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-2 w-4 h-4 px-1 rounded-full bg-[#D9673A] text-[9px] font-bold text-white flex items-center justify-center">
                     {tab.badge}
                   </span>
                 ) : null}

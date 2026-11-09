@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { 
   Doctor, 
   Pharmacy, 
@@ -85,6 +85,41 @@ export interface MushongaState {
   triggerSystemEvent: (event: Omit<SystemEvent, 'id' | 'timestamp'>) => void;
   resetAllData: () => void;
 }
+
+const memoryStore = new Map<string, string>();
+
+const safeStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem(key);
+      }
+    } catch (e) {
+      // sandbox restricted
+    }
+    return memoryStore.get(key) || null;
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, value);
+      }
+    } catch (e) {
+      // sandbox restricted
+    }
+    memoryStore.set(key, value);
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(key);
+      }
+    } catch (e) {
+      // sandbox restricted
+    }
+    memoryStore.delete(key);
+  }
+};
 
 export const useMushongaStore = create<MushongaState>()(
   persist(
@@ -573,7 +608,8 @@ export const useMushongaStore = create<MushongaState>()(
       }
     }),
     {
-      name: 'mushonga-storage-v1',
+      name: 'mushonga-storage-v2',
+      storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
         language: state.language,
         currency: state.currency,
